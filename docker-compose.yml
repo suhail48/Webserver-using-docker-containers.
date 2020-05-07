@@ -1,0 +1,30 @@
+version: '3'
+services:
+        mysqlos:
+                image: mysql:5.7
+                environment:
+                        MYSQL_USER: suhail
+                        MYSQL_PASSWORD: redhat
+                        MYSQL_DATABASE: mydb
+                        MYSQL_ROOT_PASSWORD: redhat
+                volumes:
+                        - dbvolume:/var/lib/mysql
+                restart: always
+        wordpressos:
+                image: wordpress:5.1.1-php7.3-apache
+                environment:
+                        WORDPRESS_DB_HOST: mysqlos
+                        WORDPRESS_DB_USER: suhail
+                        WORDPRESS_DB_PASSWORD: redhat
+                        WORDPRESS_DB_NAME: mydb
+                volumes:
+                        - wpvolume:/var/www/html
+                restart: always
+                ports:
+                        - 8080:80
+                depends_on:
+                        - mysqlos
+volumes:
+        wpvolume:
+        dbvolume:
+
